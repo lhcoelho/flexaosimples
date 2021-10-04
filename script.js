@@ -16,6 +16,8 @@ var eyd;
 var lambda;
 var alpha;
 var fctm;
+var roMin;
+var asMin;
 
 function dimensionar() {
   var resultado = document.getElementById("resultadoFlexao");
@@ -78,6 +80,12 @@ function dimensionamentoFlexao() {
     kxLim = kxLimite;
   }
   muLim = alpha * lambda * kxLim * (1 - (lambda * kxLim) / 2);
+  roMin = 0.15;
+  if (roMin < (100 * (0.25 * fctm)) / fyk) {
+    roMin = (100 * (0.25 * fctm)) / fyk;
+  }
+  asMin = roMin * b * (d + d1) * 100;
+  console.log(asMin);
 
   //verificação se a solução é com armadura simples ou com armadura dupla
   mu = (1.4 * mk) / ((b * d * d * fck) / 1.4);
@@ -92,10 +100,19 @@ function armaduraSimples() {
   as = (alpha * ky * b * d * 10000 * (fck / 1.4)) / (fyk / 1.15);
   var resultado = document.getElementById("resultadoFlexao");
   resultado.innerHTML =
-    "</br> Solução com armadura simples: </br>" +
-    "As= " +
+    "</br> <h2> Resultados </h2>" +
+    "Solução com armadura simples: </br>" +
+    "<b>As= " +
     as.toFixed(2) +
-    "cm²";
+    "cm² </b></br></br>" +
+    "As <sub>Min</sub> = " +
+    asMin.toFixed(2) +
+    "cm² (tomando altura total da viga como d + d')</br>" +
+    "&rho;" +
+    "<sub>Min</sub>" +
+    "(taxa mínima de armadura) = " +
+    roMin.toFixed(2) +
+    "%";
 }
 function armaduraDupla() {
   es1 = ((kxLim * d - d1) / (kxLim * d)) * ecu;
@@ -115,11 +132,20 @@ function armaduraDupla() {
     (m2d / (((d - d1) * fyk) / 1.15)) * 10000;
   var resultado = document.getElementById("resultadoFlexao");
   resultado.innerHTML =
-    "</br> Solução com armadura de compressão: </br>" +
-    "As= " +
+    "</br> <h2> Resultados </h2>" +
+    "Solução com armadura de compressão: </br>" +
+    "<b>As= " +
     as.toFixed(2) +
     "cm²" +
     "</br>As'= " +
     as1.toFixed(2) +
-    "cm²";
+    "cm² </b></br></br>" +
+    "As <sub>Min</sub> = " +
+    asMin.toFixed(2) +
+    "cm² (tomando altura total da viga como d + d') </br>" +
+    "&rho;" +
+    "<sub>Min</sub>" +
+    "(taxa mínima de armadura) = " +
+    roMin.toFixed(2) +
+    "%";
 }
